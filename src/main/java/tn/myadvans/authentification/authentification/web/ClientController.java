@@ -32,7 +32,6 @@ public class ClientController {
         this.opporunityRepository = opporunityRepository;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CLIENT')")
     @GetMapping("/client/{id}")
     public ResponseEntity<Client> getClient(@PathVariable("id") Long id) {
         return new ResponseEntity<>(clientService.getClient(id),HttpStatus.OK);
@@ -54,18 +53,19 @@ public class ClientController {
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_CC')")
     @PutMapping("/client/modify")
     public ResponseEntity<Client> getClient(@RequestBody Client client) {
         return new ResponseEntity<>(clientService.modifyClient(client), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') ")
+    @PreAuthorize("hasRole('ROLE_CC') ")
     @DeleteMapping("/client/delete/{id}")
     public ResponseEntity<String> deleteClient(@PathVariable Long id ) {
         return new ResponseEntity<>(clientService.deleteClient(id),HttpStatus.OK);
     }
 
+    @PreAuthorize("ROLE_CC")
     @PostMapping("prosp/add")
     public ResponseEntity<Client> addProsp(@RequestBody Individual individual) {
         if (individualRepository.existsByUserCode(individual.getUserCode())) {
@@ -74,12 +74,16 @@ public class ClientController {
         return new ResponseEntity<>(clientService.addProspect(individual), HttpStatus.OK);
     }
 
+    @PreAuthorize("ROLE_CC")
     @PostMapping("opp/add")
     public ResponseEntity<Client> addOpp(@RequestBody Opportunity opportunity) {
         if (opporunityRepository.existsByCustomer(opportunity.getCustomer())) {
-
             throw new IllegalArgumentException("Customer already exists");
         }
+        if (opporunityRepository.existsByUserCode(opportunity.getUserCode())) {
+            throw new IllegalArgumentException("UserCode already exists");
+        }
+
         return new ResponseEntity<>(clientService.addOpportunite(opportunity), HttpStatus.OK);
     }
 

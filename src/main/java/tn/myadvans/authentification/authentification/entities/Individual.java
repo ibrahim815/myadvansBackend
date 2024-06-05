@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -18,8 +19,9 @@ import lombok.Setter;
 public class Individual {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "custom-generator")
+    @GenericGenerator(name = "custom-generator", strategy = "tn.myadvans.authentification.authentification.entities.CustomIdentifierGenerator")
+    private String customer;
 
     private String userCode;
 
@@ -28,6 +30,8 @@ public class Individual {
     private String firstname;
 
     private String lastname;
+
+    private String email;
 
     private String bornon;
 
