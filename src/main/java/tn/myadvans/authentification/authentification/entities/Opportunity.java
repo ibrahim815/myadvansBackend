@@ -49,4 +49,6 @@ public class Opportunity {
     private  String userCode;
 
     private LocalDate date;
+
+    private int solde;
 }

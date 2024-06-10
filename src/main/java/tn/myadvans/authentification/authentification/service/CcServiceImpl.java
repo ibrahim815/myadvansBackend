@@ -68,6 +68,7 @@ public class CcServiceImpl implements CcService {
         originalCc.setName(cc.getName());
         originalCc.setLastname(cc.getLastname());
         originalCc.setPhone(cc.getPhone());
+        originalCc.setAddress(cc.getAddress());
 
         return ccRepository.save(originalCc);
     }
