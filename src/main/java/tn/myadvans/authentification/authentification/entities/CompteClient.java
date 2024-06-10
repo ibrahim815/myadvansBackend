@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Getter
@@ -14,10 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CompteClient {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idNumCompte")
+    @GeneratedValue(generator = "elevenDigitIdGenerator")
+    @GenericGenerator(name = "elevenDigitIdGenerator", strategy = "tn.myadvans.authentification.authentification.entities.ElevenDigitIdGenerator")
+    @Column(name = "idNumCompte", nullable = false, unique = true)
     private Long idNumCompte;
+
 
     @Column(name = "soldeCompte", nullable = false)
     private int soldeCompte;
